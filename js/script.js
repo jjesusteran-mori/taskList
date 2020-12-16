@@ -105,20 +105,43 @@ function removeTask(e) {
         if(confirm('Are you sure?')){
             //removes the parent of 'target' -> 'a tag' -> 'li tag'    
             e.target.parentElement.parentElement.remove();
+
+            //remove from local storage
+            removeTaskFromLocalStorage(e.target.parentElement.parentElement);
         }
     }
 }
 
+//remove from local storage (getting argument from removeTask)
+function removeTaskFromLocalStorage(taskItem){
+    let tasks;
+    if(localStorage.getItem('tasks') === null) {
+        tasks = [];
+    }else {
+        tasks = JSON.parse(localStorage.getItem('tasks'));
+    }
+
+    tasks.forEach(function(task, index) {
+        if(taskItem.textContent === task){
+            //removing from local storage using splice
+            tasks.splice(index, 1);
+        }
+    })
+    localStorage.setItem('tasks', JSON.stringify(tasks))
+}
+
 // clear tasks
 function clearTasks() {
-
     // taskList.innerHTML = '';
-
     // faster
     while(taskList.firstChild) {
         taskList.removeChild(taskList.firstChild);
     };
+    //clear from local storage
+    clearTasksFromLocalStorage();
 };
+
+// clear from local Storage
 
 // filter task
 function filterTasks(e) {

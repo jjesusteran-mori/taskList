@@ -142,6 +142,9 @@ function clearTasks() {
 };
 
 // clear from local Storage
+function clearTasksFromLocalStorage(){
+    localStorage.clear();
+}
 
 // filter task
 function filterTasks(e) {

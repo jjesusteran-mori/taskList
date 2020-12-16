@@ -11,7 +11,13 @@ loadEventListeners();
 // load all even listeners
 function loadEventListeners() {
     // add task event
-    form.addEventListener('submit', addTask)
+    form.addEventListener('submit', addTask);
+    // remove task event
+    taskList.addEventListener('click', removeTask);
+    // clear task event
+    clearBtn.addEventListener('click', clearTasks);
+    // filter taks event
+    filter.addEventListener('keyup', filterTasks)
 }
 
 // add task
@@ -42,5 +48,44 @@ function addTask(e) {
 
     // clear input once 'add task is clicked'
     taskInput.value = '';
+}
 
+// remove task function
+function removeTask(e) {
+    if(e.target.parentElement.classList.contains('delete-item')) {
+        // confirm if task gets removed
+        if(confirm('Are you sure?')){
+            //removes the parent of 'target' -> 'a tag' -> 'li tag'    
+            deleteBtn = e.target.parentElement.parentElement.remove();
+        }
+    }
+}
+
+// clear tasks
+function clearTasks() {
+
+    // taskList.innerHTML = '';
+
+    // faster
+    while(taskList.firstChild) {
+        taskList.removeChild(taskList.firstChild);
+    };
+};
+
+// filter task
+function filterTasks(e) {
+    const text = e.target.value.toLowerCase();
+    //we can use forEach because querySelectorAll returns a node list
+    document.querySelectorAll('.collection-item').forEach(
+        function(task) {
+            const item = task.firstChild.textContent;
+            if(item.toLowerCase().indexOf(text) != -1){
+                task.style.display = 'block'
+            }else {
+                task.style.display = 'none'
+            }
+        }
+    );
+
+    console.log(text);
 }
